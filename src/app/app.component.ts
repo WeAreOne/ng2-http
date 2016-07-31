@@ -1,24 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { Http } from "@angular/http";
-import 'rxjs/add/operator/map';
+import { Post, PostsService } from "./shared";
 
 @Component({
   moduleId: module.id,
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.css']
+  styleUrls: ['app.component.css'],
+  providers: [ PostsService ]
 })
 export class AppComponent implements OnInit {
   title = 'app works!';
-  apiUrl: string = 'http://jsonplaceholder.typicode.com';
+  posts: Array<Post>;
+  errorMessage: string;
 
-  constructor(private http: Http) { }
+  constructor(private postsService: PostsService) { }
 
   ngOnInit() {
-    this.http.get(this.apiUrl + '/posts')
-      .map(res => res.json())
-      .map((posts: Array<any>) => posts.slice(0, 10))
-      .map((posts: Array<any>) => posts.map(post => post.id))
-      .subscribe(id => console.log(id));
+    this.postsService.getPosts()
+                     .subscribe(posts => this.posts = posts,
+                                error => this.errorMessage = <any>error);
   }
 }
