@@ -2,3 +2,6 @@
 
 <div *ngIf="posts">{{ posts.length }}</div>
 <div *ngIf="errorMessage">{{ errorMessage }}</div>
+
+<button type="button" (click)="createPost()">Create new post</button>
+<span *ngIf="createdPost">New post with id {{ createdPost.id }} created.</span>
