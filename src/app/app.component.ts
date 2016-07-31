@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, Response } from "@angular/http";
+import { Http } from "@angular/http";
+import 'rxjs/add/operator/map';
 
 @Component({
   moduleId: module.id,
@@ -15,11 +16,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.http.get(this.apiUrl + '/posts')
-      .subscribe((response: Response) => {
-        console.log('Status: '+ response.status);
-        console.log(response.headers);
-        console.log(response.headers.get('Content-Type'));
-        console.log(response.json());
-      });
+      .map(res => res.json())
+      .map((posts: Array<any>) => posts.slice(0, 10))
+      .map((posts: Array<any>) => posts.map(post => post.id))
+      .subscribe(id => console.log(id));
   }
 }
