@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Post, PostsService } from "./shared";
+import { GithubService, Post, PostsService } from "./shared";
 
 @Component({
   moduleId: module.id,
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
-  providers: [ PostsService ]
+  providers: [ PostsService, GithubService ]
 })
 export class AppComponent implements OnInit {
   title = 'app works!';
   posts: Array<Post>;
+  repos: Array<any>;
   errorMessage: string;
   createdPost: Post;
 
-  constructor(private postsService: PostsService) { }
+  constructor(private postsService: PostsService, private githubService: GithubService) { }
 
   ngOnInit() {
     this.postsService.getPosts()
@@ -27,5 +28,11 @@ export class AppComponent implements OnInit {
     this.postsService.addPost(post)
                      .subscribe(post => this.createdPost = post,
                                 error => this.errorMessage = <any>error);
+  }
+
+  getRepos(orgName: string) {
+    this.githubService.listRepos(orgName)
+                      .subscribe(repos => this.repos = repos,
+                                 error => this.errorMessage = <any>error);
   }
 }

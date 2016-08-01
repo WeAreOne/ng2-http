@@ -5,3 +5,7 @@
 
 <button type="button" (click)="createPost()">Create new post</button>
 <span *ngIf="createdPost">New post with id {{ createdPost.id }} created.</span>
+
+<br />
+<button type="button" (click)="getRepos('WeAreOne')">Get Repos from Organization</button>
+<span *ngIf="repos">This organization has {{ repos.length }} repositories.</span>
